@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IPC – Project Charter Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "neutral-100": "#f8f9fa",
+              "neutral-200": "#eff2f5",
+              "neutral-700": "#6c757d",
+              "neutral-900": "#212529",
+              "success": "#28a745",
+              "info-dark": "#007bff",
+              "info-light": "#17a2b8",
+              "warning": "#ffc107",
+              "danger": "#dc3545",
+              "orange": "#fd7e14",
+              // New colors for the stacked bar chart
+              "apps-color": "#4e79a7",
+              "infra-color": "#f28e2b",
+              "security-color": "#e15759",
+              "data-color": "#76b7b2",
+              "support-color": "#59a14f",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+</head>
+<body class="font-display bg-background-light text-neutral-900">
+<div class="flex flex-col min-h-screen">
+<header class="bg-white border-b border-neutral-200 sticky top-0 z-10">
+<div class="max-w-7xl mx-auto px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Company logo abstract blue circles" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2K8Y99Gw8XNhJyVYvR8bfmtSZ5J4XhbgO0_5UyiB3ajK-Hi7nuWaaTJHz0uZXaQNaMGM9SC4zDIk8VNp8ztJubxQEbI9Xx4By5HIE1EwUzkV0moAha1qr71gqUZPMpYUuCuA6BOl4yUsD-ffbOs2iDaDz6a6nIFYWMh1j0omMKBPcMjId3tISWf2eyDPeOgS1rUJzr6Nux6rTd3jkLUmahI4KEijOoYAjjQgdWYicBhZMt3h-JufjXWBcsNcCXo487kXArOJKjqI");'></div>
+<div class="flex flex-col">
+<h1 class="font-medium text-base text-neutral-900">Project Governance</h1>
+<p class="font-normal text-sm text-neutral-700">IT Department</p>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-2">
+<a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 text-neutral-700" href="index.html">
+<p class="font-medium text-sm">IPR</p>
+</a>
+<a class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="IPC.html">
+<p class="font-medium text-sm">IPC</p>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-neutral-700 hover:text-primary" href="#">
+<span class="material-symbols-outlined">settings</span>
+</a>
+<a class="text-neutral-700 hover:text-primary" href="#">
+<span class="material-symbols-outlined">help</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 p-6 lg:p-8">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black leading-tight tracking-tight text-neutral-900">IPC – Project Charter Dashboard</h1>
+<p class="text-base font-normal text-neutral-700">Overview of IPC progress, delays, and execution control across IT Units.</p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option selected="">All Business Units</option>
+<option>Sales</option>
+<option>Marketing</option>
+<option>Finance</option>
+<option>IT Infra</option>
+<option>Product</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option selected="">All IT Units</option>
+<option>Apps</option>
+<option>Infra</option>
+<option>Security</option>
+<option>Data</option>
+<option>Support</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option>2023</option>
+<option selected="">2024</option>
+<option>2025</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPC Status Overview</h3>
+<div class="flex flex-wrap items-center justify-center gap-6">
+<div class="relative size-40">
+<svg class="size-full" viewBox="0 0 36 36">
+<circle class="stroke-current text-neutral-200" cx="18" cy="18" fill="none" r="15.9155" stroke-width="4"></circle>
+<circle class="stroke-current text-info-dark" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="10, 100" stroke-dashoffset="0" stroke-width="4"></circle>
+<circle class="stroke-current text-info-light" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="35, 100" stroke-dashoffset="-10" stroke-width="4"></circle>
+<circle class="stroke-current text-warning" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="5, 100" stroke-dashoffset="-45" stroke-width="4"></circle>
+<circle class="stroke-current text-success" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="40, 100" stroke-dashoffset="-50" stroke-width="4"></circle>
+<circle class="stroke-current text-danger" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="10, 100" stroke-dashoffset="-90" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-neutral-900">850</span>
+<span class="text-sm text-neutral-700">Total IPCs</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-info-dark"></div><span class="text-sm font-medium">Open (85)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-info-light"></div><span class="text-sm font-medium">In Progress (298)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-warning"></div><span class="text-sm font-medium">On Hold (42)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-success"></div><span class="text-sm font-medium">Completed (340)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-danger"></div><span class="text-sm font-medium">Cancelled (85)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm flex flex-col md:col-span-2">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<h3 class="text-lg font-bold text-neutral-900">Delayed IPC Items</h3>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-data-color"></div>
+<span>Data</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-apps-color"></div>
+<span>Digital Growth</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-infra-color"></div>
+<span>Digital Solution</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-security-color"></div>
+<span>Food Tech (New Projects)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-support-color"></div>
+<span>Innovation (Product)</span>
+</div>
+</div>
+</div>
+<div class="h-[18rem] relative flex flex-1">
+<canvas id="delayedIpcChart"></canvas>
+</div>
+<script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                    const ctx = document.getElementById('delayedIpcChart').getContext('2d');
+                    Chart.register(ChartDataLabels);
+                    const tailwindConfig = {
+                        neutral700: '#6c757d',
+                        neutral200: '#eff2f5',
+                        apps: '#4e79a7',
+                        infra: '#f28e2b',
+                        security: '#e15759',
+                        data: '#76b7b2',
+                        support: '#59a14f',
+                    };
+                    const delayedIpcChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['≥ 90 days', '60–89 days', '30–59 days'],
+                            datasets: [
+                                { label: 'Data', data: [9, 14, 20], backgroundColor: tailwindConfig.data },
+                                { label: 'Digital Growth', data: [10, 18, 22], backgroundColor: tailwindConfig.apps },
+                                { label: 'Digital Solution', data: [15, 25, 35], backgroundColor: tailwindConfig.infra },
+                                { label: 'Food Tech (New Projects)', data: [8, 12, 16], backgroundColor: tailwindConfig.security },
+                                { label: 'Innovation (Product)', data: [6, 10, 25], backgroundColor: tailwindConfig.support }
+                            ]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                datalabels: {
+                                    color: 'white',
+                                    font: { weight: 'bold', family: "'Manrope', sans-serif" },
+                                    formatter: (value) => value > 0 ? value : ''
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false,
+                                    callbacks: {
+                                       title: function(tooltipItems) {
+                                            return tooltipItems[0].label;
+                                        }
+                                    }
+                                },
+                            },
+                            scales: {
+                                y: {
+                                    stacked: true,
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif" }
+                                    }
+                                },
+                                x: {
+                                    stacked: true,
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: tailwindConfig.neutral200,
+                                        borderDash: [4, 4]
+                                    },
+                                    ticks: {
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif" }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Number of IPCs',
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif", weight: '500' }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+                </script>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPC by Business Unit</h3>
+<div class="h-64 flex items-end gap-3 justify-around">
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[62.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">11</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">38</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">5</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">43</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">11</div></div><p class="text-xs text-neutral-700 text-center">Food</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[79.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">14</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">48</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">7</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">55</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">14</div></div><p class="text-xs text-neutral-700 text-center">Hotel</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-full"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">17</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">60</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">8</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">68</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">17</div></div><p class="text-xs text-neutral-700 text-center">Retail</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[71.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">12</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">43</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">6</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">49</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">12</div></div><p class="text-xs text-neutral-700 text-center">Minor Food</p></div>
+</div>
+</div>
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm md:col-span-2">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPC by IT Unit</h3>
+<div class="h-64 flex items-end gap-3 justify-between">
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[86.4%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">15</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">51</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">7</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">58</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">15</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Data</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[81.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">14</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">48</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">7</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">55</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">14</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Digital Growth</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[95.2%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">16</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">56</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">8</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">64</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">16</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Digital Solution</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-full"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">17</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">59</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">8</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">68</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">17</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Food Tech<br/>(New Projects)</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[90.8%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">15</div><div class="bg-info-light flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 35%;">54</div><div class="bg-warning flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">8</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 40%;">61</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 10%;">15</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Innovation<br/>(Product)</p></div>
+</div>
+</div>
+</div>
+<div class="rounded-xl bg-white border border-neutral-200 shadow-sm">
+<div class="p-4 sm:p-6 border-b border-neutral-200">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<h3 class="text-lg font-bold text-neutral-900">IPC Records Table</h3>
+<p class="text-sm text-neutral-700">Detailed list of all project control items.</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-700">search</span>
+<input class="w-48 sm:w-64 h-10 pl-10 pr-4 rounded-lg bg-background-light border-neutral-200 focus:ring-primary focus:border-primary text-sm" placeholder="Search records..." type="text"/>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-sm">
+<span class="material-symbols-outlined !text-xl">download</span>
+<span class="truncate">Export</span>
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-xs text-neutral-700 uppercase bg-neutral-100">
+<tr>
+<th class="px-6 py-3" scope="col">IPC No</th>
+<th class="px-6 py-3" scope="col">IPC Name</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Status
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">Business Unit</th>
+<th class="px-6 py-3" scope="col">IT Unit</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Duration
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Created Date
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPC-001</td>
+<td class="px-6 py-4">Server Patching Q3</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">Completed</span></td>
+<td class="px-6 py-4">Food</td>
+<td class="px-6 py-4">Data</td>
+<td class="px-6 py-4">45 days</td>
+<td class="px-6 py-4">2024-07-15</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPC-002</td>
+<td class="px-6 py-4">Firewall Rule Update</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-light/10 text-info-light">In Progress</span></td>
+<td class="px-6 py-4">Hotel</td>
+<td class="px-6 py-4">Digital Growth</td>
+<td class="px-6 py-4">32 days</td>
+<td class="px-6 py-4">2024-08-01</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPC-003</td>
+<td class="px-6 py-4">Marketing Campaign Support</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-light/10 text-info-light">In Progress</span></td>
+<td class="px-6 py-4">Retail</td>
+<td class="px-6 py-4">Digital Solution</td>
+<td class="px-6 py-4">8 weeks</td>
+<td class="px-6 py-4">2024-08-05</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPC-004</td>
+<td class="px-6 py-4">New Employee Onboarding</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/10 text-warning">On Hold</span></td>
+<td class="px-6 py-4">Minor Food</td>
+<td class="px-6 py-4">Food Tech (New Projects)</td>
+<td class="px-6 py-4">5 days</td>
+<td class="px-6 py-4">2024-08-20</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPC-005</td>
+<td class="px-6 py-4">Database Performance Tuning</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-dark/10 text-info-dark">Open</span></td>
+<td class="px-6 py-4">Food</td>
+<td class="px-6 py-4">Innovation (Product)</td>
+<td class="px-6 py-4">-</td>
+<td class="px-6 py-4">2024-09-01</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-medium">IPC-006</td>
+<td class="px-6 py-4">Legacy System Decommission</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/10 text-danger">Cancelled</span></td>
+<td class="px-6 py-4">Hotel</td>
+<td class="px-6 py-4">Data</td>
+<td class="px-6 py-4">12 weeks</td>
+<td class="px-6 py-4">2024-06-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between p-4 text-sm">
+<span class="text-neutral-700">Showing 1 to 6 of 850 results</span>
+<div class="inline-flex items-center gap-2">
+<button class="px-3 py-1 rounded-md border border-neutral-200 hover:bg-neutral-100">Previous</button>
+<button class="px-3 py-1 rounded-md border border-neutral-200 hover:bg-neutral-100">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

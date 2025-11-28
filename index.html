@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IPR – Project Request Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "neutral-100": "#f8f9fa",
+              "neutral-200": "#eff2f5",
+              "neutral-700": "#6c757d",
+              "neutral-900": "#212529",
+              "success": "#28a745",
+              "info-dark": "#007bff",
+              "info-light": "#17a2b8",
+              "warning": "#ffc107",
+              "danger": "#dc3545",
+              "orange": "#fd7e14",
+              // New colors for the stacked bar chart
+              "apps-color": "#4e79a7",
+              "infra-color": "#f28e2b",
+              "security-color": "#e15759",
+              "data-color": "#76b7b2",
+              "support-color": "#59a14f",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+</head>
+<body class="font-display bg-background-light text-neutral-900">
+<div class="flex flex-col min-h-screen">
+<header class="bg-white border-b border-neutral-200 sticky top-0 z-10">
+<div class="max-w-7xl mx-auto px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Company logo abstract blue circles" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2K8Y99Gw8XNhJyVYvR8bfmtSZ5J4XhbgO0_5UyiB3ajK-Hi7nuWaaTJHz0uZXaQNaMGM9SC4zDIk8VNp8ztJubxQEbI9Xx4By5HIE1EwUzkV0moAha1qr71gqUZPMpYUuCuA6BOl4yUsD-ffbOs2iDaDz6a6nIFYWMh1j0omMKBPcMjId3tISWf2eyDPeOgS1rUJzr6Nux6rTd3jkLUmahI4KEijOoYAjjQgdWYicBhZMt3h-JufjXWBcsNcCXo487kXArOJKjqI");'></div>
+<div class="flex flex-col">
+<h1 class="font-medium text-base text-neutral-900">Project Governance</h1>
+<p class="font-normal text-sm text-neutral-700">Performance Team</p>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-2">
+<a class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="index.html">
+<p class="font-medium text-sm">IPR</p>
+</a>
+<a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 text-neutral-700" href="IPC.html">
+<p class="font-medium text-sm">IPC</p>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-neutral-700 hover:text-primary" href="#">
+<span class="material-symbols-outlined">settings</span>
+</a>
+<a class="text-neutral-700 hover:text-primary" href="#">
+<span class="material-symbols-outlined">help</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 p-6 lg:p-8">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black leading-tight tracking-tight text-neutral-900">IPR – Project Request Dashboard</h1>
+<p class="text-base font-normal text-neutral-700">Overview of project request metrics and trends.</p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option selected="">All Business Units</option>
+<option>Hotel</option>
+<option>Food</option>
+<option>Lifestyle</option>
+<option>MINT</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option selected="">All IT Units</option>
+<option>Hotel Tech</option>
+<option>Operations</option>
+<option>Global Digital</option>
+<option>AVC Tech</option>
+<option>Systems</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full sm:w-48 appearance-none rounded-lg border-neutral-200 bg-white pl-4 pr-10 py-2 text-sm focus:border-primary focus:ring-primary">
+<option>2023</option>
+<option selected="">2024</option>
+<option>2025</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-700">expand_more</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPR by Status</h3>
+<div class="flex flex-wrap items-center justify-center gap-6">
+<div class="relative size-40">
+<svg class="size-full" viewBox="0 0 36 36">
+<circle class="stroke-current text-neutral-200" cx="18" cy="18" fill="none" r="15.9155" stroke-width="4"></circle>
+<circle class="stroke-current text-info-dark" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="65, 100" stroke-dashoffset="0" stroke-width="4"></circle>
+<circle class="stroke-current text-success" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="30, 100" stroke-dashoffset="-65" stroke-width="4"></circle>
+<circle class="stroke-current text-danger" cx="18" cy="18" fill="none" r="15.9155" stroke-dasharray="5, 100" stroke-dashoffset="-95" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-neutral-900">1,240</span>
+<span class="text-sm text-neutral-700">Total IPRs</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-info-dark"></div><span class="text-sm font-medium">In Progress (806)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-success"></div><span class="text-sm font-medium">Completed (372)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-danger"></div><span class="text-sm font-medium">Rejected (62)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm flex flex-col md:col-span-2">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<h3 class="text-lg font-bold text-neutral-900">Delayed In-Progress IPRs</h3>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-apps-color"></div>
+<span>Hotel Tech</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-infra-color"></div>
+<span>Operations</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-security-color"></div>
+<span>Global Digital</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-data-color"></div>
+<span>AVC Tech</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-support-color"></div>
+<span>Systems</span>
+</div>
+</div>
+</div>
+<div class="h-[18rem] relative flex flex-1">
+<canvas id="delayedIprChart"></canvas>
+</div>
+<script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                    const ctx = document.getElementById('delayedIprChart').getContext('2d');
+                    Chart.register(ChartDataLabels);
+                    const tailwindConfig = {
+                        neutral700: '#6c757d',
+                        neutral200: '#eff2f5',
+                        apps: '#4e79a7',
+                        infra: '#f28e2b',
+                        security: '#e15759',
+                        data: '#76b7b2',
+                        support: '#59a14f',
+                    };
+                    const delayedIprChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['≥ 90 days', '60–89 days', '30–59 days'],
+                            datasets: [
+                                { label: 'Hotel Tech', data: [8, 15, 25], backgroundColor: tailwindConfig.apps },
+                                { label: 'Operations', data: [12, 20, 30], backgroundColor: tailwindConfig.infra },
+                                { label: 'Global Digital', data: [5, 10, 15], backgroundColor: tailwindConfig.security },
+                                { label: 'AVC Tech', data: [7, 12, 18], backgroundColor: tailwindConfig.data },
+                                { label: 'Systems', data: [4, 8, 22], backgroundColor: tailwindConfig.support }
+                            ]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                datalabels: {
+                                    color: 'white',
+                                    font: { weight: 'bold', family: "'Manrope', sans-serif" },
+                                    formatter: (value) => value > 0 ? value : ''
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false,
+                                    callbacks: {
+                                       title: function(tooltipItems) {
+                                            return tooltipItems[0].label;
+                                        }
+                                    }
+                                },
+                            },
+                            scales: {
+                                y: {
+                                    stacked: true,
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif" }
+                                    }
+                                },
+                                x: {
+                                    stacked: true,
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: tailwindConfig.neutral200,
+                                        borderDash: [4, 4]
+                                    },
+                                    ticks: {
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif" }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Number of IPRs',
+                                        color: tailwindConfig.neutral700,
+                                        font: { family: "'Manrope', sans-serif", weight: '500' }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+                </script>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPR by Business Unit</h3>
+<div class="h-64 flex items-end gap-3 justify-between">
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[62.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">127</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">58</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">10</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Hotel</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[79.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">161</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">75</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">12</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Food</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-full"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">202</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">93</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">15</div></div><p class="text-xs text-neutral-700 text-center leading-tight">Lifestyle</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[71.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">145</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">67</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">11</div></div><p class="text-xs text-neutral-700 text-center leading-tight">MINT</p></div>
+</div>
+</div>
+<div class="rounded-xl p-6 bg-white border border-neutral-200 shadow-sm md:col-span-2">
+<h3 class="text-lg font-bold text-neutral-900 mb-4">IPR by IT Unit</h3>
+<div class="h-64 flex items-end gap-3 justify-between">
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[81.7%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">145</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">67</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">11</div></div><p class="text-xs text-neutral-700 text-center leading-tight h-8 flex items-start justify-center">Hotel Tech</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[95.2%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">169</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">78</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">13</div></div><p class="text-xs text-neutral-700 text-center leading-tight h-8 flex items-start justify-center">Operations</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-full"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">177</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">82</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">14</div></div><p class="text-xs text-neutral-700 text-center leading-tight h-8 flex items-start justify-center">Global Digital</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[86.4%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">153</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">71</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">12</div></div><p class="text-xs text-neutral-700 text-center leading-tight h-8 flex items-start justify-center">AVC Tech</p></div>
+<div class="flex flex-col items-center gap-2 w-full h-full justify-end relative"><div class="w-full flex flex-col-reverse justify-start rounded-t-lg overflow-hidden h-[90.8%]"><div class="bg-info-dark flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 65%;">161</div><div class="bg-success flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 30%;">75</div><div class="bg-danger flex items-center justify-center text-white text-[10px] font-bold py-1" style="height: 5%;">12</div></div><p class="text-xs text-neutral-700 text-center leading-tight h-8 flex items-start justify-center">Systems</p></div>
+</div>
+</div>
+</div>
+<div class="rounded-xl bg-white border border-neutral-200 shadow-sm">
+<div class="p-4 sm:p-6 border-b border-neutral-200">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<h3 class="text-lg font-bold text-neutral-900">IPR Records</h3>
+<p class="text-sm text-neutral-700">Detailed list of all project requests.</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-700">search</span>
+<input class="w-48 sm:w-64 h-10 pl-10 pr-4 rounded-lg bg-background-light border-neutral-200 focus:ring-primary focus:border-primary text-sm" placeholder="Search records..." type="text"/>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-sm">
+<span class="material-symbols-outlined !text-xl">download</span>
+<span class="truncate">Export</span>
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-xs text-neutral-700 uppercase bg-neutral-100">
+<tr>
+<th class="px-6 py-3" scope="col">IPR No</th>
+<th class="px-6 py-3" scope="col">IPR Name</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Status
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">Business Unit</th>
+<th class="px-6 py-3" scope="col">Brand</th>
+<th class="px-6 py-3" scope="col">IT Unit</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        MGS IT est. cost
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        MGS IT est. effort
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Est. Duration (in weeks)
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+<th class="px-6 py-3" scope="col">
+<div class="flex items-center gap-1 cursor-pointer">
+                                        Created
+                                        <span class="material-symbols-outlined !text-base text-neutral-400">swap_vert</span>
+</div>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPR-0234</td>
+<td class="px-6 py-4">New CRM Implementation</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">Completed</span></td>
+<td class="px-6 py-4">Hotel</td>
+<td class="px-6 py-4">Brand A</td>
+<td class="px-6 py-4">Hotel Tech</td>
+<td class="px-6 py-4">$250,000</td>
+<td class="px-6 py-4">50 MD</td>
+<td class="px-6 py-4">10</td>
+<td class="px-6 py-4">2023-10-15</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPR-0235</td>
+<td class="px-6 py-4">Website Redesign</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-dark/10 text-info-dark">Approver 1</span></td>
+<td class="px-6 py-4">Food</td>
+<td class="px-6 py-4">Brand B</td>
+<td class="px-6 py-4">Operations</td>
+<td class="px-6 py-4">$120,000</td>
+<td class="px-6 py-4">31.25 MD</td>
+<td class="px-6 py-4">6.25</td>
+<td class="px-6 py-4">2023-11-01</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPR-0236</td>
+<td class="px-6 py-4">BI Tool Upgrade</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">Completed</span></td>
+<td class="px-6 py-4">Lifestyle</td>
+<td class="px-6 py-4">Brand C</td>
+<td class="px-6 py-4">Global Digital</td>
+<td class="px-6 py-4">$85,000</td>
+<td class="px-6 py-4">18.75 MD</td>
+<td class="px-6 py-4">3.75</td>
+<td class="px-6 py-4">2023-11-05</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPR-0237</td>
+<td class="px-6 py-4">Cloud Migration Phase 2</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-light/10 text-info-light">Delivery Team</span></td>
+<td class="px-6 py-4">MINT</td>
+<td class="px-6 py-4">Brand B</td>
+<td class="px-6 py-4">AVC Tech</td>
+<td class="px-6 py-4">$500,000</td>
+<td class="px-6 py-4">150 MD</td>
+<td class="px-6 py-4">30</td>
+<td class="px-6 py-4">2023-11-20</td>
+</tr>
+<tr class="border-b border-neutral-200">
+<td class="px-6 py-4 font-medium">IPR-0238</td>
+<td class="px-6 py-4">Mobile App Refresh</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/10 text-warning">Submit</span></td>
+<td class="px-6 py-4">Hotel</td>
+<td class="px-6 py-4">Brand A</td>
+<td class="px-6 py-4">Systems</td>
+<td class="px-6 py-4">$75,000</td>
+<td class="px-6 py-4">22.5 MD</td>
+<td class="px-6 py-4">4.5</td>
+<td class="px-6 py-4">2023-12-01</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-medium">IPR-0239</td>
+<td class="px-6 py-4">Internal Chatbot Dev</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/10 text-danger">Rejected</span></td>
+<td class="px-6 py-4">Food</td>
+<td class="px-6 py-4">Brand C</td>
+<td class="px-6 py-4">Hotel Tech</td>
+<td class="px-6 py-4">$30,000</td>
+<td class="px-6 py-4">10 MD</td>
+<td class="px-6 py-4">2</td>
+<td class="px-6 py-4">2023-12-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between p-4 text-sm">
+<span class="text-neutral-700">Showing 1 to 6 of 1,240 results</span>
+<div class="inline-flex items-center gap-2">
+<button class="px-3 py-1 rounded-md border border-neutral-200 hover:bg-neutral-100">Previous</button>
+<button class="px-3 py-1 rounded-md border border-neutral-200 hover:bg-neutral-100">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
